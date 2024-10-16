@@ -4,10 +4,9 @@ import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 
 export async function authRoutes(app: FastifyInstance) {
-
-  app.get('/status', async (request) => {
-    return "201"
-  });
+  app.get('/', async (request) => {
+    return 'Express Typescript on Vercel'
+  })
 
   app.post('/register', async (request) => {
     const bodySchema = z.object({

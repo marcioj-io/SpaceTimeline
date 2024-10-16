@@ -30,7 +30,7 @@ app.register(memories_1.memoriesRoutes);
 app
     .listen({
     port: 3333,
-    host: '0.0.0.0', // Certifique-se de que a Vercel possa acessar o servidor corretamente
+    host: '0.0.0.0',
 })
     .then(() => {
     console.log(`🚀 HTTP server running on port ${process.env.PORT || 3333}`);

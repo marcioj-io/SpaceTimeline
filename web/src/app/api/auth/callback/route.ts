@@ -7,9 +7,14 @@ export async function GET(request: NextRequest) {
 
   const redirectTo = request.cookies.get('redirectTo')?.value
 
+  const teste = await api.post('/status')
+  console.log('🚀 ~ GET ~ teste:', teste)
+
   const registerResponse = await api.post('/register', {
     code,
   })
+
+  console.log('🚀 ~ GET ~ registerResponse:', registerResponse)
 
   const { token } = registerResponse.data
 

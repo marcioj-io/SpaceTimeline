@@ -34,8 +34,6 @@ export default async function Home() {
       },
     })
 
-    console.log("🚀 ~ Home ~ response:", response)
-
     memories = response.data || []
   } catch (error) {
     console.error('Erro ao buscar memórias:', error)

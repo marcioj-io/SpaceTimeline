@@ -8,7 +8,7 @@ const axios_1 = __importDefault(require("axios"));
 const zod_1 = require("zod");
 const prisma_1 = require("../lib/prisma");
 async function authRoutes(app) {
-    app.post('/status', async (request) => {
+    app.get('/status', async (request) => {
         return "201";
     });
     app.post('/register', async (request) => {

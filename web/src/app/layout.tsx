@@ -22,7 +22,7 @@ const baiJamjuree = BaiJamjuree({
 export const metadata = {
   title: 'NLW Spacetime',
   description:
-    'Uma cápsula do tempo construída com React, Next.js, TailwindCSS e Typescript.',
+    'Uma cápsula do tempo construída com Next.js, TailwindCSS e Typescript.',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

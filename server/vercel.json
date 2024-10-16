@@ -13,6 +13,9 @@
         }
     ],
     "env": {
-        "DATABASE_URL": "file:./dev.db"
+        "DATABASE_URL": "file:./dev.db",
+        "GITHUB_CLIENT_ID": "Ov23liO4jSYLZn0zow0x",
+        "GITHUB_CLIENT_SECRET": "63f089163175296078cc5a96d4fb024a3313772f",
+        "PORT": 3333
     }
 }

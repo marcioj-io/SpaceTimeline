@@ -11,5 +11,8 @@
             "src": "/(.*)",
             "dest": "src/server.ts"
         }
-    ]
+    ],
+    "env": {
+        "DATABASE_URL": "file:./dev.db"
+    }
 }

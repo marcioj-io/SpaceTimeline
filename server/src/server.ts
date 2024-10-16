@@ -19,7 +19,7 @@ app.register(require('@fastify/static'), {
 })
 
 app.register(cors, {
-  origin: 'https://space-timelinee.vercel.app',
+  origin: true,
 })
 
 app.register(jwt, {

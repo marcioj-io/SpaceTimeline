@@ -6,15 +6,17 @@
       "use": "@vercel/node",
       "config": {
         "includeFiles": [
-          "prisma/**"
+          "prisma/**",
+          "uploads/**",
+          ".env"
         ]
       }
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/src/server.ts"
+      "src": "/(.*)",
+      "dest": "src/server.ts"
     }
   ]
 }

@@ -38,3 +38,4 @@ app.listen({ port: Number(port), host: '0.0.0.0' }).then(() => {
     console.log(`🚀 HTTP server running on port ${port}`);
 });
 module.exports = app;
+//# sourceMappingURL=server.js.map

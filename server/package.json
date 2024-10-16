@@ -6,12 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "lint": "eslint src --ext .ts --fix",
-    "start": "node dist/index.js",
-    "prisma-generate": "prisma generate"
-  },
-  "engines": {
-    "node": "20.x"
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",

@@ -1,20 +1,15 @@
 {
     "version": 2,
-    "builds": [
-        {
-            "src": "src/server.ts",
-            "use": "@vercel/node"
+    "functions": {
+        "api/server.ts": {
+            "runtime": "nodejs20.x",
+            "includeFiles": "prisma/dev.db"
         }
-    ],
+    },
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/src/server.ts"
+            "dest": "/api/server.ts"
         }
-    ],
-    "functions": {
-        "src/server.ts": {
-            "includeFiles": "prisma/dev.db"
-        }
-    }
+    ]
 }

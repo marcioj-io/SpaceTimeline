@@ -5,7 +5,7 @@ import { prisma } from '../lib/prisma'
 
 export async function authRoutes(app: FastifyInstance) {
 
-  app.post('/status', async (request) => {
+  app.get('/status', async (request) => {
     return "201"
   });
 

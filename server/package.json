@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "nodemon src/server.ts",

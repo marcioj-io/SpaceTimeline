@@ -1,23 +1,15 @@
 {
+    "version": 2,
     "builds": [
         {
-            "src": "server",
-            "use": "@vercel/node",
-            "config": {
-                "outputDirectory": "dist"
-            }
+            "src": "src/index.ts",
+            "use": "@now/node"
         }
     ],
     "routes": [
         {
-            "src": "/(.*)",
-            "dest": "/dist/$1"
+            "handle": "vercel",
+            "src": "/(.*)"
         }
-    ],
-    "env": {
-        "DATABASE_URL": "file:./dev.db",
-        "GITHUB_CLIENT_ID": "Ov23liO4jSYLZn0zow0x",
-        "GITHUB_CLIENT_SECRET": "63f089163175296078cc5a96d4fb024a3313772f",
-        "PORT": "3333"
-    }
+    ]
 }

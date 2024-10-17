@@ -33,9 +33,13 @@ app.register(jwt_1.default, {
 app.register(auth_1.authRoutes);
 app.register(upload_1.uploadRoutes);
 app.register(memories_1.memoriesRoutes);
-const port = process.env.PORT || 3333;
-app.listen({ port: Number(port) });
-app.get('/', async (request) => {
-    return 'Express Typescript on Vercel';
+app.get('/', async (request, resp) => {
+    return resp.send({ message: "Ok" });
 });
-module.exports = app;
+const port = process.env.PORT || 3333;
+if (!app.server.listening) {
+    app.listen({ port: Number(port), host: '0.0.0.0' }).then(() => {
+        console.log(`🚀 HTTP server running on port ${port}`);
+    });
+}
+exports.default = app;

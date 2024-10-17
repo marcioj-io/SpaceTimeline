@@ -5,74 +5,92 @@ import { prisma } from '../lib/prisma'
 
 export async function authRoutes(app: FastifyInstance) {
   app.post('/register', async (request) => {
-    const bodySchema = z.object({
-      code: z.string(),
-    })
+    try {
+      // Validação do corpo da requisição
+      const bodySchema = z.object({
+        code: z.string().nonempty("O código é obrigatório"), // Verifica se o código não está vazio
+      });
 
-    const { code } = bodySchema.parse(request.body)
+      const { code } = bodySchema.parse(request.body);
 
-    const accessTokenResponse = await axios.post(
-      'https://github.com/login/oauth/access_token',
-      null,
-      {
-        params: {
-          client_id: process.env.GITHUB_CLIENT_ID,
-          client_secret: process.env.GITHUB_CLIENT_SECRET,
-          code,
+      // Solicitação do token de acesso ao GitHub
+      const accessTokenResponse = await axios.post(
+        'https://github.com/login/oauth/access_token',
+        null,
+        {
+          params: {
+            client_id: process.env.GITHUB_CLIENT_ID,
+            client_secret: process.env.GITHUB_CLIENT_SECRET,
+            code,
+          },
+          headers: {
+            Accept: 'application/json',
+          },
         },
+      );
+
+      if (!accessTokenResponse.data.access_token) {
+        console.error('Failed to retrieve access token:', accessTokenResponse.data);
+        throw new Error('Failed to retrieve access token');
+      }
+
+      const { access_token } = accessTokenResponse.data;
+
+      // Solicitação das informações do usuário
+      const userResponse = await axios.get('https://api.github.com/user', {
         headers: {
-          Accept: 'application/json',
+          Authorization: `Bearer ${access_token}`,
         },
-      },
-    )
+      });
 
-    const { access_token } = accessTokenResponse.data
+      const userSchema = z.object({
+        id: z.number(),
+        login: z.string(),
+        name: z.string(),
+        avatar_url: z.string().url(),
+      });
 
-    const userResponse = await axios.get('https://api.github.com/user', {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    })
+      const userInfo = userSchema.parse(userResponse.data);
 
-    const userSchema = z.object({
-      id: z.number(),
-      login: z.string(),
-      name: z.string(),
-      avatar_url: z.string().url(),
-    })
-
-    const userInfo = userSchema.parse(userResponse.data)
-
-    let user = await prisma.user.findUnique({
-      where: {
-        githubId: userInfo.id,
-      },
-    })
-
-    if (!user) {
-      user = await prisma.user.create({
-        data: {
+      let user = await prisma.user.findUnique({
+        where: {
           githubId: userInfo.id,
-          login: userInfo.login,
-          name: userInfo.name,
-          avatarUrl: userInfo.avatar_url,
         },
-      })
-    }
+      });
 
-    const token = app.jwt.sign(
-      {
-        name: user.name,
-        avatarUrl: user.avatarUrl,
-      },
-      {
-        sub: user.id,
-        expiresIn: '30 days',
-      },
-    )
+      if (!user) {
+        user = await prisma.user.create({
+          data: {
+            githubId: userInfo.id,
+            login: userInfo.login,
+            name: userInfo.name,
+            avatarUrl: userInfo.avatar_url,
+          },
+        });
+      }
 
-    return {
-      token,
+      const token = app.jwt.sign(
+        {
+          name: user.name,
+          avatarUrl: user.avatarUrl,
+        },
+        {
+          sub: user.id,
+          expiresIn: '30 days',
+        },
+      );
+
+      return {
+        token,
+      };
+    } catch (error) {
+      console.error('Error in /register route:', error);
+      return {
+        statusCode: 500,
+        error: 'Internal Server Error',
+        message: error instanceof Error ? error.message : 'Erro desconhecido',
+      };
     }
-  })
+  });
 }
+

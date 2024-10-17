@@ -8,9 +8,6 @@ const axios_1 = __importDefault(require("axios"));
 const zod_1 = require("zod");
 const prisma_1 = require("../lib/prisma");
 async function authRoutes(app) {
-    app.get('/', async (request) => {
-        return 'Express Typescript on Vercel';
-    });
     app.post('/register', async (request) => {
         const bodySchema = zod_1.z.object({
             code: zod_1.z.string(),

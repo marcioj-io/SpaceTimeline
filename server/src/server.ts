@@ -33,9 +33,11 @@ app.register(authRoutes);
 app.register(uploadRoutes);
 app.register(memoriesRoutes);
 
-const port = process.env.PORT || 3333;
-app.listen({ port: Number(port), host: '0.0.0.0' }).then(() => {
-  console.log(`🚀 HTTP server running on port ${port}`);
-});
+if (!app.server.listening) { // Checa se o servidor já está ouvindo
+  const port = process.env.PORT || 3333;
+  app.listen({ port: Number(port), host: '0.0.0.0' }).then(() => {
+    console.log(`🚀 HTTP server running on port ${port}`);
+  });
+}
 
-module.exports = app;
+export default app;

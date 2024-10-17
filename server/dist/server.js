@@ -13,7 +13,6 @@ const multipart_1 = __importDefault(require("@fastify/multipart"));
 const memories_1 = require("./routes/memories");
 const auth_1 = require("./routes/auth");
 const upload_1 = require("./routes/upload");
-// Crie a pasta 'uploads' se não existir
 const uploadDir = (0, node_path_1.resolve)(__dirname, '../uploads');
 if (!(0, node_fs_1.existsSync)(uploadDir)) {
     (0, node_fs_1.mkdirSync)(uploadDir);
@@ -33,13 +32,11 @@ app.register(jwt_1.default, {
 app.register(auth_1.authRoutes);
 app.register(upload_1.uploadRoutes);
 app.register(memories_1.memoriesRoutes);
-app.get('/', async (request, resp) => {
-    return resp.send({ message: "Ok" });
+app.get('/', async (request, reply) => {
+    return reply.send({ message: "Ok" });
 });
 const port = process.env.PORT || 3333;
-if (!app.server.listening) {
-    app.listen({ port: Number(port), host: '0.0.0.0' }).then(() => {
-        console.log(`🚀 HTTP server running on port ${port}`);
-    });
-}
-exports.default = app;
+app.listen({ port: Number(port) }).catch(err => {
+    app.log.error(err);
+    process.exit(1);
+});

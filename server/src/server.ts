@@ -33,11 +33,14 @@ app.register(authRoutes);
 app.register(uploadRoutes);
 app.register(memoriesRoutes);
 
-if (!app.server.listening) { // Checa se o servidor já está ouvindo
-  const port = process.env.PORT || 3333;
-  app.listen({ port: Number(port), host: '0.0.0.0' }).then(() => {
-    console.log(`🚀 HTTP server running on port ${port}`);
-  });
-}
+const port = process.env.PORT || 3333;
 
-export default app;
+app.listen({ port: Number(port), host: '0.0.0.0' }).then(() => {
+  console.log(`🚀 HTTP server running on port ${port}`);
+});
+
+app.get('/', async (request) => {
+  return 'Express Typescript on Vercel'
+})
+
+module.exports = app;

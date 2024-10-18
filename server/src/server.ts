@@ -20,9 +20,8 @@ const app = fastify({
 })
 
 app.register(cors, {
-  origin: 'https://space-timeline.vercel.app/'
+  origin: '*'
 });
-
 
 app.register(multipart);
 

@@ -5,8 +5,6 @@ const signInURL = `https://github.com/login/oauth/authorize?client_id=${process.
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value
 
-  console.log("🚀 ~ middleware ~ token:", token)
-
   if (!token) {
     return NextResponse.redirect(signInURL, {
       headers: {

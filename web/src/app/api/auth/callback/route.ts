@@ -10,7 +10,6 @@ export async function GET(request: NextRequest) {
   const registerResponse = await api.post('/register', {
     code,
   })
-
   const { token } = registerResponse.data
 
   const redirectURL = redirectTo ?? new URL('/', request.url)
@@ -19,7 +18,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.redirect(redirectURL, {
     headers: {
-      'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; max-age=${cookieExpiresInSeconds}`,
+      'Set-Cookie': `token=${token}; Path=/; HttpOnly; SameSite=None; max-age=${cookieExpiresInSeconds}`,
     },
   })
 }

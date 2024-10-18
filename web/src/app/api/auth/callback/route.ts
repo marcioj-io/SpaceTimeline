@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.redirect(redirectURL, {
     headers: {
-      'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=None; max-age=${cookieExpiresInSeconds}; Domain=.vercel.app`,
+      'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=None; max-age=${cookieExpiresInSeconds};`,
     },
   })
 }

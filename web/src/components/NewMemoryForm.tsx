@@ -30,7 +30,6 @@ export function NewMemoryForm() {
 
     const token = Cookie.get('token')
     await api.post(
-
       '/memories',
       {
         coverUrl,

@@ -25,11 +25,10 @@ export async function GET(request: NextRequest) {
 
   // });
 
-  return r.cookies.set("token", token, {
-    path: "/",
+  return r.cookies.set('token', token, {
+    path: '/',
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: 'strict',
     maxAge: cookieExpiresInSeconds,
   })
-
 }

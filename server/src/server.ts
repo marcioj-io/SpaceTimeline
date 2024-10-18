@@ -14,16 +14,23 @@ if (!existsSync(uploadDir)) {
   mkdirSync(uploadDir);
 }
 
-const app = fastify();
+const app = fastify({
+  logger: true,
+  bodyLimit: 10485760, // Limit defined at 10 MB at global level
+})
+
+app.register(cors, {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+});
 
 app.register(multipart);
+
 app.register(require('@fastify/static'), {
   root: uploadDir,
   prefix: '/uploads',
 });
-app.register(cors, {
-  origin: true,
-});
+
 app.register(jwt, {
   secret: 'spacetime',
 });

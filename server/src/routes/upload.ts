@@ -1,11 +1,6 @@
-import { randomUUID } from 'node:crypto'
-import { extname, resolve } from 'node:path'
 import { FastifyInstance } from 'fastify'
-import { createWriteStream, mkdirSync, existsSync } from 'node:fs'
-import { pipeline } from 'node:stream'
-import { promisify } from 'node:util'
-
-const pump = promisify(pipeline)
+import { randomUUID } from 'node:crypto'
+import { extname } from 'node:path'
 
 export async function uploadRoutes(app: FastifyInstance) {
   app.post('/upload', async (request, reply) => {
@@ -30,24 +25,15 @@ export async function uploadRoutes(app: FastifyInstance) {
     const extension = extname(upload.filename)
     const fileName = fileId.concat(extension)
 
-    // Verifique se o diretório 'uploads' existe, se não, crie-o.
-    const uploadDir = resolve(__dirname, '..', '..', 'uploads')
-    if (!existsSync(uploadDir)) {
-      mkdirSync(uploadDir, { recursive: true })
+    // Converta a imagem para base64
+    const chunks: Uint8Array[] = []
+    for await (const chunk of upload.file) {
+      chunks.push(chunk)
     }
 
-    const writeStream = createWriteStream(resolve(uploadDir, fileName))
+    const buffer = Buffer.concat(chunks)
+    const base64Image = `data:${upload.mimetype};base64,${buffer.toString('base64')}`
 
-    try {
-      await pump(upload.file, writeStream)
-    } catch (error) {
-      console.error('Error during file upload:', error)
-      return reply.status(500).send()
-    }
-
-    const fullUrl = request.protocol.concat('://').concat(request.hostname)
-    const fileUrl = new URL(`/uploads/${fileName}`, fullUrl).toString()
-
-    return { fileUrl }
+    return { fileUrl: base64Image }
   })
 }

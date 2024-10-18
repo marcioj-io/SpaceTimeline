@@ -19,7 +19,7 @@
         }
     ],
     "env": {
-        "DATABASE_URL": "file:./src/prisma/dev.db",
+        "DATABASE_URL": "postgresql://spacetimeline-db_owner:LH0vCtsah3bF@ep-cold-rain-a8ur0323.eastus2.azure.neon.tech/spacetimeline-db?sslmode=require",
         "GITHUB_CLIENT_ID": "Ov23liO4jSYLZn0zow0x",
         "GITHUB_CLIENT_SECRET": "63f089163175296078cc5a96d4fb024a3313772f",
         "PORT": "3333"

@@ -13,8 +13,6 @@ export function middleware(request: NextRequest) {
     })
   }
 
-  localStorage.setItem('token', token)
-
   return NextResponse.next()
 }
 

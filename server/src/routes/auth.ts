@@ -80,6 +80,8 @@ export async function authRoutes(app: FastifyInstance) {
         },
       );
 
+      console.log('bb', token);;
+
       return {
         token,
       };

@@ -7,18 +7,27 @@ export async function GET(request: NextRequest) {
 
   const redirectTo = request.cookies.get('redirectTo')?.value
 
-  const registerResponse = await api.post('/register', {
-    code,
-  })
-  const { token } = registerResponse.data
+  try {
+    const registerResponse = await api.post('/register', {
+      code,
+    })
 
-  const redirectURL = redirectTo ?? new URL('/', request.url)
+    const { token } = registerResponse.data
 
-  const cookieExpiresInSeconds = 60 * 60 * 24 * 30
+    if (!token) {
+      return new NextResponse('Token não encontrado', { status: 400 })
+    }
 
-  return NextResponse.redirect(redirectURL, {
-    headers: {
-      'Set-Cookie': `token=${token}; Path=/; max-age=${cookieExpiresInSeconds}`,
-    },
-  })
+    const redirectURL = redirectTo ?? new URL('/', request.url)
+    const cookieExpiresInSeconds = 60 * 60 * 24 * 30
+
+    return NextResponse.redirect(redirectURL, {
+      headers: {
+        'Set-Cookie': `token=${token}; Path=/; max-age=${cookieExpiresInSeconds}`,
+      },
+    })
+  } catch (error) {
+    console.error('Erro ao registrar o token:', error)
+    return new NextResponse('Falha ao registrar token', { status: 500 })
+  }
 }

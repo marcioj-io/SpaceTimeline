@@ -17,14 +17,17 @@ const uploadDir = (0, node_path_1.resolve)(__dirname, '../uploads');
 if (!(0, node_fs_1.existsSync)(uploadDir)) {
     (0, node_fs_1.mkdirSync)(uploadDir);
 }
-const app = (0, fastify_1.default)();
+const app = (0, fastify_1.default)({
+    logger: true,
+    bodyLimit: 10485760,
+});
+app.register(cors_1.default, {
+    origin: 'https://space-timeline.vercel.app/'
+});
 app.register(multipart_1.default);
 app.register(require('@fastify/static'), {
     root: uploadDir,
     prefix: '/uploads',
-});
-app.register(cors_1.default, {
-    origin: true,
 });
 app.register(jwt_1.default, {
     secret: 'spacetime',

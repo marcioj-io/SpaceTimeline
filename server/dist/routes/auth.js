@@ -10,12 +10,10 @@ const prisma_1 = require("../lib/prisma");
 async function authRoutes(app) {
     app.post('/register', async (request) => {
         try {
-            // Validação do corpo da requisição
             const bodySchema = zod_1.z.object({
-                code: zod_1.z.string().nonempty("O código é obrigatório"), // Verifica se o código não está vazio
+                code: zod_1.z.string().nonempty("O código é obrigatório"),
             });
             const { code } = bodySchema.parse(request.body);
-            // Solicitação do token de acesso ao GitHub
             const accessTokenResponse = await axios_1.default.post('https://github.com/login/oauth/access_token', null, {
                 params: {
                     client_id: process.env.GITHUB_CLIENT_ID,
@@ -66,6 +64,8 @@ async function authRoutes(app) {
                 sub: user.id,
                 expiresIn: '30 days',
             });
+            console.log('bb', token);
+            ;
             return {
                 token,
             };

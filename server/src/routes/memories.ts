@@ -17,7 +17,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
       },
     })
 
-    return memories.map((memory) => {
+    return memories.map((memory: any) => {
       return {
         id: memory.id,
         coverUrl: memory.coverUrl,

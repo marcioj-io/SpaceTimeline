@@ -18,10 +18,10 @@ export async function GET(request: NextRequest) {
   const cookieExpiresInSeconds = 60 * 60 * 24 * 30
 
   return NextResponse.redirect(redirectURL, {
-    // headers: {
-    //   'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; max-age=60 * 60 * 24 * 30;`,
-    // },
-  }).cookies.set('token', token, {
+    headers: {
+      'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; max-age=60 * 60 * 24 * 30;`,
+    },
+  }).cookies.set('token2', token, {
     path: '/',
     httpOnly: true,
     sameSite: 'lax',

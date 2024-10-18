@@ -19,12 +19,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.redirect(redirectURL, {
     headers: {
-      'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; max-age=60 * 60 * 24 * 30;`,
+      'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${cookieExpiresInSeconds}`,
     },
-  }).cookies.set('token2', token, {
-    path: '/',
-    httpOnly: true,
-    sameSite: 'lax',
-    maxAge: cookieExpiresInSeconds,
   })
 }

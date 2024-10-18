@@ -6,7 +6,8 @@
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
     "prisma:generate": "npx prisma generate",
-    "build": "npm run prisma:generate && tsc"
+    "build": "npm run prisma:generate && tsc",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@fastify/cors": "^8.2.1",

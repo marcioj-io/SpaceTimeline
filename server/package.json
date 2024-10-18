@@ -4,10 +4,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
     "start": "node dist/server.js",
-    "outDir": "./dist",
-    "vercel-build": "npx prisma generate && prisma migrate deploy && npm run build"
+    "prisma:generate": "npx prisma generate",
+    "build": "npm run prisma:generate && tsc"
   },
   "dependencies": {
     "@fastify/cors": "^8.2.1",

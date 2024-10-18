@@ -22,5 +22,4 @@ export async function GET(request: NextRequest) {
       'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=None; max-age=${cookieExpiresInSeconds}; Domain=.vercel.app`,
     },
   })
-
 }

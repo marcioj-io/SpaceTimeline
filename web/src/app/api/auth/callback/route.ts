@@ -16,19 +16,15 @@ export async function GET(request: NextRequest) {
   const redirectURL = redirectTo ?? new URL('/', request.url)
 
   const cookieExpiresInSeconds = 60 * 60 * 24 * 30
-  const r = NextResponse.redirect(redirectURL, { status: 302 })
 
-  // return NextResponse.redirect(redirectURL, {
-  //   headers: {
-  //     'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; max-age=60 * 60 * 24 * 30;`,
-  //   },
-
-  // });
-
-  return r.cookies.set('token', token, {
+  return NextResponse.redirect(redirectURL, {
+    // headers: {
+    //   'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; max-age=60 * 60 * 24 * 30;`,
+    // },
+  }).cookies.set('token', token, {
     path: '/',
     httpOnly: true,
-    sameSite: 'strict',
+    sameSite: 'lax',
     maxAge: cookieExpiresInSeconds,
   })
 }

@@ -6,14 +6,13 @@ import { prisma } from '../lib/prisma'
 export async function authRoutes(app: FastifyInstance) {
   app.post('/register', async (request) => {
     try {
-      // Validação do corpo da requisição
+
       const bodySchema = z.object({
-        code: z.string().nonempty("O código é obrigatório"), // Verifica se o código não está vazio
+        code: z.string().nonempty("O código é obrigatório"),
       });
 
       const { code } = bodySchema.parse(request.body);
 
-      // Solicitação do token de acesso ao GitHub
       const accessTokenResponse = await axios.post(
         'https://github.com/login/oauth/access_token',
         null,

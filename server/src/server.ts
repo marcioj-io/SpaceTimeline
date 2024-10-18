@@ -14,14 +14,15 @@ if (!existsSync(uploadDir)) {
   mkdirSync(uploadDir);
 }
 
-const app = fastify({
-  logger: true,
-  bodyLimit: 10485760, // Limit defined at 10 MB at global level
-})
+// const app = fastify({
+//   logger: true,
+//   bodyLimit: 10485760, // Limit defined at 10 MB at global level
+// })
+
+const app = fastify();
 
 app.register(cors, {
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  origin: true
 });
 
 app.register(multipart);

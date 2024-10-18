@@ -29,6 +29,7 @@ export function NewMemoryForm() {
     }
 
     const token = Cookie.get('token')
+    const token2 = localStorage.getItem('token')
 
     await api.post(
       '/memories',
@@ -39,7 +40,7 @@ export function NewMemoryForm() {
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token2}`,
         },
       },
     )

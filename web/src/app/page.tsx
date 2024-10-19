@@ -17,13 +17,13 @@ interface Memory {
 }
 
 export default async function Home() {
-  const isAuthenticated = cookies().has('token')
+  const isAuthenticated = cookies().has('tkk')
 
   if (!isAuthenticated) {
     return <EmptyMemories />
   }
 
-  const token = cookies().get('token')?.value
+  const token = cookies().get('tkk')?.value
 
   let memories: Memory[] = []
 

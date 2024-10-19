@@ -6,6 +6,7 @@ import ptBR from 'dayjs/locale/pt-br'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 dayjs.locale(ptBR)
 
@@ -16,27 +17,33 @@ interface Memory {
   createdAt: string
 }
 
-export default async function Home() {
+export default function Home() {
   const isAuthenticated = cookies().has('tkk')
+  const [memories, setMemories] = useState<Memory[]>([])
+
+  useEffect(() => {
+    if (!isAuthenticated) return
+
+    const fetchMemories = async () => {
+      const token = cookies().get('tkk')?.value
+
+      try {
+        const response = await api.get('/memories', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        setMemories(response.data || [])
+      } catch (error) {
+        console.error('Erro ao buscar memórias:', error)
+      }
+    }
+
+    fetchMemories()
+  }, [isAuthenticated])
 
   if (!isAuthenticated) {
-    return <EmptyMemories />
-  }
-
-  const token = cookies().get('tkk')?.value
-
-  let memories: Memory[] = []
-
-  try {
-    const response = await api.get('/memories', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-    memories = response.data || []
-  } catch (error) {
-    console.error('Erro ao buscar memórias:', error)
     return <EmptyMemories />
   }
 

@@ -18,12 +18,12 @@ export async function GET(request: NextRequest) {
       return new NextResponse('Token not found', { status: 400 });
     }
 
-    const redirectURL = redirectTo ?? new URL('/', request.url);
+    const redirectURL = redirectTo ?? '/';
     const cookieExpiresInSeconds = 60 * 60 * 24 * 30; // 30 days
 
     return NextResponse.redirect(redirectURL, {
       headers: {
-        'Set-Cookie': `token=${token}; Path=/; max-age=${cookieExpiresInSeconds}`,
+        'Set-Cookie': `token=${token}; Path=/; HttpOnly; SameSite=Lax; max-age=${cookieExpiresInSeconds}`,
       },
     });
   } catch (error) {

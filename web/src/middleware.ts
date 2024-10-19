@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
     const redirectURL = new URL(signInURL)
     return NextResponse.redirect(redirectURL, {
       headers: {
-        'Set-Cookie': `redirectTo=${request.nextUrl.pathname}; Path=/; HttpOnly; SameSite=Lax; max-age=20;`,
+        'Set-Cookie': `redirectTo=${request.url}; Path=/; HttpOnly; SameSite=Lax; max-age=20;`,
       },
     })
   }

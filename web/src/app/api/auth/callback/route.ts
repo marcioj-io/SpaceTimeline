@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
 
     const { token } = registerResponse.data
 
-    if (!token) {
+    if (token === undefined || token === null) {
       return new NextResponse('Token not found', { status: 400 })
     }
 

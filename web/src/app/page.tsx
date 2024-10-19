@@ -1,12 +1,12 @@
+// src/app/page.tsx
+
 import { EmptyMemories } from '@/components/EmptyMemories'
 import { api } from '@/lib/api'
-import { cookies } from 'next/headers'
 import dayjs from 'dayjs'
 import ptBR from 'dayjs/locale/pt-br'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { useState, useEffect } from 'react'
 
 dayjs.locale(ptBR)
 
@@ -17,37 +17,26 @@ interface Memory {
   createdAt: string
 }
 
-export default function Home() {
-  const isAuthenticated = cookies().has('tkk')
-  const [memories, setMemories] = useState<Memory[]>([])
+async function fetchMemories(token: string): Promise<Memory[]> {
+  const response = await api.get('/memories', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  return response.data || []
+}
 
-  useEffect(() => {
-    if (!isAuthenticated) return
+export default async function Home() {
+  const cookieHeader = document.cookie // Acessa os cookies diretamente
+  const token = cookieHeader.split('; ').find((row) => row.startsWith('tkk='))?.split('=')[1]
+  let memories: Memory[] = []
+  let isAuthenticated = !!token
 
-    const fetchMemories = async () => {
-      const token = cookies().get('tkk')?.value
-
-      try {
-        const response = await api.get('/memories', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-
-        setMemories(response.data || [])
-      } catch (error) {
-        console.error('Erro ao buscar memórias:', error)
-      }
-    }
-
-    fetchMemories()
-  }, [isAuthenticated])
-
-  if (!isAuthenticated) {
-    return <EmptyMemories />
+  if (isAuthenticated && token) {
+    memories = await fetchMemories(token)
   }
 
-  if (memories.length === 0) {
+  if (!isAuthenticated || memories.length === 0) {
     return <EmptyMemories />
   }
 

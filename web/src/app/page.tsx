@@ -30,13 +30,12 @@ async function fetchMemories(token: string): Promise<Memory[]> {
 export default async function Home() {
   const token = cookies().get('tkk')?.value
   let memories: Memory[] = []
-  let isAuthenticated = !!token
 
-  if (isAuthenticated && token) {
+  if (token !== undefined && token !== null) {
     memories = await fetchMemories(token)
   }
 
-  if (!isAuthenticated || memories.length === 0) {
+  if (memories.length === 0) {
     return <EmptyMemories />
   }
 

@@ -1,42 +1,48 @@
 // src/app/page.tsx
 
-import { EmptyMemories } from '@/components/EmptyMemories'
-import { api } from '@/lib/api'
-import dayjs from 'dayjs'
-import ptBR from 'dayjs/locale/pt-br'
-import Image from 'next/image'
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { cookies } from 'next/headers'
+'use client'; // Isso transforma o componente em um componente de cliente
 
-dayjs.locale(ptBR)
+import { EmptyMemories } from '@/components/EmptyMemories';
+import { api } from '@/lib/api';
+import dayjs from 'dayjs';
+import ptBR from 'dayjs/locale/pt-br';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+dayjs.locale(ptBR);
 
 interface Memory {
-  id: string
-  coverUrl: string
-  excerpt: string
-  createdAt: string
+  id: string;
+  coverUrl: string;
+  excerpt: string;
+  createdAt: string;
 }
 
-async function fetchMemories(token: string): Promise<Memory[]> {
-  const response = await api.get('/memories', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-  return response.data || []
-}
+export default function Home() {
+  const [memories, setMemories] = useState<Memory[]>([]);
 
-export default async function Home() {
-  const token = cookies().get('tkk')?.value
-  let memories: Memory[] = []
+  const [token, setToken] = useState<string>();
+  const cookieToken = document.cookie.split('; ').find(row => row.startsWith('tkk='))?.split('=')[1];
+  setToken(cookieToken)
 
-  if (token !== undefined && token !== null) {
-    memories = await fetchMemories(token)
-  }
+  useEffect(() => {
+    const fetchMemories = async (token: string | undefined) => {
+      const response = await api.get('/memories', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setMemories(response.data || []);
+    };
+
+    fetchMemories(token)
+
+  }, [token]);
 
   if (memories.length === 0) {
-    return <EmptyMemories />
+    return <EmptyMemories />;
   }
 
   return (
@@ -67,5 +73,5 @@ export default async function Home() {
         </div>
       ))}
     </div>
-  )
+  );
 }

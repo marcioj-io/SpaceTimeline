@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.redirect(redirectURL, {
     headers: {
-      'Set-Cookie': `tkk=${token}; Path=/; HttpOnly; SameSite=Lax; max-age=${cookieExpiresInSeconds}`,
+      'Set-Cookie': `tkk=${token}; Path=/; SameSite=Lax; max-age=${cookieExpiresInSeconds}`,
     },
   })
 }

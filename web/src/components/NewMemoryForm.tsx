@@ -5,7 +5,7 @@ import { MediaPicker } from './MediaPicker'
 import { FormEvent } from 'react'
 import { api } from '@/lib/api'
 import { useRouter } from 'next/navigation'
-import { cookies } from 'next/headers'
+import Cookies from 'js-cookie'
 
 export function NewMemoryForm() {
   const router = useRouter()
@@ -28,7 +28,7 @@ export function NewMemoryForm() {
       coverUrl = uploadResponse.data.fileUrl
     }
 
-    const token = cookies().get('tkk')?.value
+    const token = Cookies.get('tkk')
 
     await api.post(
       '/memories',

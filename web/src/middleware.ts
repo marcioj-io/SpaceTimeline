@@ -6,8 +6,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('tkk')?.value
 
   if (token === null || token === undefined) {
-    const redirectURL = new URL(signInURL)
-    return NextResponse.redirect(redirectURL, {
+    return NextResponse.redirect(signInURL, {
       headers: {
         'Set-Cookie': `redirectTo=${request.url}; Path=/; HttpOnly; SameSite=Lax; max-age=20;`,
       },

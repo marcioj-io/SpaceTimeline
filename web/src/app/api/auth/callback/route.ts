@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   const { token } = registerResponse.data
 
   if (token === undefined || token === null) {
-    return new NextResponse('Token not found', { status: 400 })
+    return new NextResponse('tkk not found', { status: 400 })
   }
 
   const redirectURL = redirectTo ?? '/'
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.redirect(redirectURL, {
     headers: {
-      'Set-Cookie': `token=${token}; Path=/; HttpOnly; SameSite=Lax; max-age=${cookieExpiresInSeconds}`,
+      'Set-Cookie': `tkk=${token}; Path=/; HttpOnly; SameSite=Lax; max-age=${cookieExpiresInSeconds}`,
     },
   })
 }

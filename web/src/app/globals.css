@@ -6,3 +6,20 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto/Roboto-Medium.ttf') format('truetype'),
+       url('/fonts/Roboto/Roboto-Light.ttf') format('truetype');
+  font-weight: 400; 
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bai Jamjuree';
+  src: url('/fonts/Bai_Jamjure/BaiJamjuree.ttf') format('truetype'),
+       url('/fonts/Bai_Jamjure/BaiJamjuree-Bold.ttf') format('truetype');
+  font-weight: 700; 
+  font-style: normal;
+}

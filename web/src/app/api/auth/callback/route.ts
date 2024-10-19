@@ -17,7 +17,8 @@ export async function GET(request: NextRequest) {
     return new NextResponse('tkk not found', { status: 400 })
   }
 
-  const redirectURL = redirectTo ?? '/'
+  const redirectURL = redirectTo ?? new URL('/', request.url)
+
   const cookieExpiresInSeconds = 60 * 60 * 24 * 30 // 30 days
 
   return NextResponse.redirect(redirectURL, {

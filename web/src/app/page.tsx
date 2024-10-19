@@ -7,6 +7,7 @@ import ptBR from 'dayjs/locale/pt-br'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { cookies } from 'next/headers'
 
 dayjs.locale(ptBR)
 
@@ -27,8 +28,7 @@ async function fetchMemories(token: string): Promise<Memory[]> {
 }
 
 export default async function Home() {
-  const cookieHeader = document.cookie // Acessa os cookies diretamente
-  const token = cookieHeader.split('; ').find((row) => row.startsWith('tkk='))?.split('=')[1]
+  const token = cookies().get('tkk')?.value
   let memories: Memory[] = []
   let isAuthenticated = !!token
 

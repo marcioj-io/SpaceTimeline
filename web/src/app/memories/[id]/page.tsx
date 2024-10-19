@@ -1,4 +1,3 @@
-// src/app/memories/[id]/page.tsx
 import { api } from '@/lib/api'
 import { cookies } from 'next/headers'
 import dayjs from 'dayjs'
@@ -16,10 +15,8 @@ interface Memory {
 }
 
 export default async function MemorieId({ params }: { params: { id: string } }) {
-    const isAuthenticated = cookies().has('tkk')
-
-    if (!isAuthenticated) {
-        return <EmptyMemories />
+    if (!params.id) {
+        return <div>Memória não encontrada.</div>
     }
 
     const token = cookies().get('tkk')?.value
@@ -41,7 +38,7 @@ export default async function MemorieId({ params }: { params: { id: string } }) 
                     </time>
                     <Image
                         src={memorie.coverUrl}
-                        alt=""
+                        alt={`Capa da memória: ${memorie.excerpt}`} // Melhora de acessibilidade
                         width={592}
                         height={280}
                         quality={100}

@@ -1,5 +1,5 @@
 // src/app/page.tsx
-// 'use client'
+'use client'
 
 import { EmptyMemories } from '@/components/EmptyMemories';
 import { api } from '@/lib/api';
@@ -8,7 +8,8 @@ import ptBR from 'dayjs/locale/pt-br';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
+import { useEffect, useState } from 'react';
 
 dayjs.locale(ptBR);
 
@@ -20,34 +21,25 @@ interface Memory {
 }
 
 export default async function Home() {
-  // const [memories, setMemories] = useState<Memory[]>([]);
-  const token = cookies().get('tkk')?.value
+  // const token = cookies().get('tkk')?.value
+  const [memories, setMemories] = useState<Memory[]>([]);
 
-  // const [token, setToken] = useState<string>();
-  // const cookieToken = document.cookie.split('; ').find(row => row.startsWith('tkk='))?.split('=')[1];
-  // setToken(cookieToken)
-
-  // useEffect(() => {
-  //   const fetchMemories = async (token: string | undefined) => {
-  //     const response = await api.get('/memories', {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     setMemories(response.data || []);
-  //   };
-
-  //   fetchMemories(token)
-
-  // }, [token]);
-  let memories = [];
+  const [token, setToken] = useState<string>();
+  const cookieToken = document.cookie.split('; ').find(row => row.startsWith('tkk='))?.split('=')[1];
+  setToken(cookieToken)
 
   try {
-    memories = await api.get('/memories', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then(t => t.data);
+    const fetchMemories = async (token: string | undefined) => {
+      return await api.get('/memories', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(t => setMemories(t.data))
+    };
+
+    useEffect(() => {
+      fetchMemories(token);
+    }, [token, memories]);
 
     if (memories.length === 0) {
       return <EmptyMemories />;

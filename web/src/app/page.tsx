@@ -48,7 +48,6 @@ export default async function Home() {
         Authorization: `Bearer ${token}`,
       },
     }).then(t => t.data);
-    // setMemories(response.data || []);
 
     if (memories.length === 0) {
       return <EmptyMemories />;
@@ -84,9 +83,6 @@ export default async function Home() {
       </div>
     );
   } catch (erro) {
-    return {
-      'error': "Error message",
-      'status': 500
-    }
+    return <EmptyMemories />
   }
 }

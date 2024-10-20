@@ -19,37 +19,48 @@ interface Memory {
 }
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
   const [memories, setMemories] = useState<Memory[]>([]);
   const [token, setToken] = useState<string | undefined>();
 
-  // UseEffect para obter o token do cookie no lado do cliente
   useEffect(() => {
-    const cookieToken = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('tkk='))
-      ?.split('=')[1];
-    setToken(cookieToken);
-  }, []);
-
-  // UseEffect para buscar memórias
-  useEffect(() => {
-    const fetchMemories = async () => {
-      if (token) {
-        try {
-          const response = await api.get('/memories', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setMemories(response.data);
-        } catch (error) {
-          console.error('Erro ao buscar memórias:', error);
-        }
-      }
-    };
-
-    fetchMemories();
+    if (!token) {
+      const cookieToken = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('tkk='))
+        ?.split('=')[1];
+      setToken(cookieToken);
+    }
   }, [token]);
+
+  const fetchMemories = async () => {
+    if (token) {
+      setIsLoading(true);
+      try {
+        const response = await api.get('/memories', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setMemories(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar memórias:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchMemories();
+    }
+  }, [token]);
+
+
+  if (isLoading) {
+    return <div>Carregando...</div>;
+  }
 
   if (memories.length === 0) {
     return <EmptyMemories />;

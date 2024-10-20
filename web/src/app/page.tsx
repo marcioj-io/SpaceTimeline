@@ -24,30 +24,26 @@ export default function Home() {
   const [token, setToken] = useState<string | undefined>();
 
   useEffect(() => {
-    if (!token) {
-      const cookieToken = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith('tkk='))
-        ?.split('=')[1];
-      setToken(cookieToken);
-    }
-  }, [token]);
+    const cookieToken = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('tkk='))
+      ?.split('=')[1];
+    setToken(cookieToken);
+  }, []);
 
   const fetchMemories = async () => {
-    if (token) {
-      setIsLoading(true);
-      try {
-        const response = await api.get('/memories', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setMemories(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar memórias:', error);
-      } finally {
-        setIsLoading(false);
-      }
+    setIsLoading(true);
+    try {
+      const response = await api.get('/memories', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setMemories(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar memórias:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
